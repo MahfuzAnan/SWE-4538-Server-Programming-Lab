@@ -115,10 +115,64 @@ const postHobby = async (req, res) => {
     }
   };
 
+  const postHobbyMultipleImages = async (req, res) => {
+    const hobbyID = req.params.id;
+  
+    try {
+      const hobby = await Hobby.findById(hobbyID);
+  
+      if (!hobby) {
+        return res.status(404).json({ error: "Hobby not found." });
+      }
+  
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ error: "No files provided" });
+      }
+  
+      const images = req.files.map((file) => file.filename);
+  
+      // Update the hobby's multiple images
+      hobby.images = images;
+      await hobby.save();
+  
+      res.json({ message: "Hobby multiple images posted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  const postHobbyAudioFile = async (req, res) => {
+    const hobbyID = req.params.id;
+  
+    try {
+      const hobby = await Hobby.findById(hobbyID);
+  
+      if (!hobby) {
+        return res.status(404).json({ error: "Hobby not found." });
+      }
+  
+      if (!req.file) {
+        return res.status(400).json({ error: "No audio file provided" });
+      }
+  
+      const audio = req.file.filename;
+  
+      // Update the hobby's audio file
+      hobby.audio = audio;
+      await hobby.save();
+  
+      res.json({ message: "Hobby audio file posted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
   module.exports = {
     postHobby,
     getHobbiesByUserID,
     updateHobby,
     deleteHobby,
-    postHobbyProfileImage
+    postHobbyProfileImage,
+    postHobbyMultipleImages,
+    postHobbyAudioFile
   };

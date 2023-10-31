@@ -21,6 +21,10 @@ const HobbySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  audio: {
+    type: String,
+    default:'',
+  },
 });
 
 module.exports = mongoose.model("Hobby", HobbySchema);

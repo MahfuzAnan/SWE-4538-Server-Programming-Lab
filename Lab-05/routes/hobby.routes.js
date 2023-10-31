@@ -5,7 +5,9 @@ const {
   getHobbiesByUserID,
   updateHobby,
   deleteHobby,
-  postHobbyProfileImage
+  postHobbyProfileImage,
+  postHobbyMultipleImages,
+  postHobbyAudioFile
 } = require("../controllers/hobby.controllers");
 
 const {uploadProfileImage, uploadAudioFile} = require("../middlewares/image.middleware")
@@ -15,6 +17,7 @@ router.get("/hobby/:id", getHobbiesByUserID)
 router.patch("/updatehobby/:id", updateHobby)
 router.delete("/deletehobby/:id", deleteHobby)
 router.post("/hobby/image/:id", uploadProfileImage.single('image'), postHobbyProfileImage);
-
+router.post('/hobby/multiple_image/:id', uploadProfileImage.array('images', 5), postHobbyMultipleImages);
+router.post('/hobby/audio/:id', uploadAudioFile.single('audio'), postHobbyAudioFile);
 
 module.exports = router;
